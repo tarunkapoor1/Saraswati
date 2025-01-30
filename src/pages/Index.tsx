@@ -44,12 +44,16 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-b from-[#F1F0FB] to-white px-4 py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-2 animate-in">AI Search Assistant</h1>
-        <p className="text-gray-600 text-center mb-8 animate-in">
-          Powered by Deepseek R1 Free Model
-        </p>
+        <div className="text-center mb-12 space-y-4">
+          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] animate-in">
+            Saraswati
+          </h1>
+          <p className="text-[#1A1F2C] text-lg opacity-80">
+            Wisdom flows through every answer
+          </p>
+        </div>
         <SearchBox onSearch={handleSearch} isLoading={isLoading} />
         <ResponseDisplay
           response={response}

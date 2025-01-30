@@ -24,13 +24,13 @@ const SearchBox = ({ onSearch, isLoading }: SearchBoxProps) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Ask anything..."
-          className="search-input"
+          className="w-full px-6 py-4 text-lg bg-white/50 backdrop-blur-sm border border-[#9b87f5]/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#9b87f5]/20 transition-all duration-200 shadow-sm"
           disabled={isLoading}
         />
         <button
           type="submit"
           disabled={isLoading || !query.trim()}
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-primary text-primary-foreground opacity-90 hover:opacity-100 transition-opacity disabled:opacity-50"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-xl bg-[#9b87f5] text-white opacity-90 hover:opacity-100 transition-opacity disabled:opacity-50 shadow-md"
         >
           <Search className="w-5 h-5" />
         </button>
