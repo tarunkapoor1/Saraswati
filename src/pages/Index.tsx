@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SearchBox from "../components/SearchBox";
 import ResponseDisplay from "../components/ResponseDisplay";
+import Logo from "../components/Logo";
 
 const Index = () => {
   const [response, setResponse] = useState("");
@@ -44,13 +45,14 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F1F0FB] to-white px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-[#b8b8f3]/20 via-[#d7b8f3]/20 to-[#f397d6]/20 px-4 py-12 backdrop-blur-sm">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12 space-y-4">
-          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] animate-in">
+          <Logo />
+          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#b8b8f3] via-[#d7b8f3] to-[#f397d6] animate-in">
             Saraswati
           </h1>
-          <p className="text-[#1A1F2C] text-lg opacity-80">
+          <p className="text-[#232e21] text-lg opacity-80 font-medium">
             Wisdom flows through every answer
           </p>
         </div>
