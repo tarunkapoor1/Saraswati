@@ -2,28 +2,29 @@ import { useState } from "react";
 import SearchBox from "../components/SearchBox";
 import ResponseDisplay from "../components/ResponseDisplay";
 import Logo from "../components/Logo";
+import { Language } from "../components/LanguageSelector";
 
 const Index = () => {
   const [response, setResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [citations, setCitations] = useState<Array<{ url: string; title: string }>>([]);
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = async (query: string, language: Language) => {
     setIsLoading(true);
     setResponse("");
     setCitations([]);
 
     try {
-      // Simulate API call for now
-      const mockResponse = "This is a simulated response using the Deepseek R1 Free model. The actual integration will be implemented once we have the API endpoint ready.";
+      // Simulate API call with language support
+      const mockResponse = `This is a simulated response in ${language.name} (${language.nativeName}). The actual integration will be implemented once we have the API endpoint ready.`;
       const mockCitations = [
         {
           url: "https://example.com/1",
-          title: "Sample Citation 1",
+          title: `Sample Citation 1 - ${language.name}`,
         },
         {
           url: "https://example.com/2",
-          title: "Sample Citation 2",
+          title: `Sample Citation 2 - ${language.name}`,
         },
       ];
 
