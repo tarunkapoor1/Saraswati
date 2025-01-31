@@ -1,10 +1,4 @@
 project_id = "nfwkhmkhnsblhyjafmel"
 
-[api]
-enabled = true
-port = 54321
-schemas = ["public", "storage", "graphql_public"]
-
-[[functions]]
 [functions.process-question]
 verify_jwt = false
