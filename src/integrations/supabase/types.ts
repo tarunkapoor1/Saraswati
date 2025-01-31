@@ -9,7 +9,68 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      answers: {
+        Row: {
+          answer: string
+          citations: Json | null
+          created_at: string | null
+          id: string
+          question_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          answer: string
+          citations?: Json | null
+          created_at?: string | null
+          id?: string
+          question_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          answer?: string
+          citations?: Json | null
+          created_at?: string | null
+          id?: string
+          question_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questions: {
+        Row: {
+          created_at: string | null
+          id: string
+          question: string
+          source_language: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          question: string
+          source_language: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          question?: string
+          source_language?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

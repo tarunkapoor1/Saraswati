@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import SearchBox from "../components/SearchBox";
 import ResponseDisplay from "../components/ResponseDisplay";
 import Logo from "../components/Logo";
 import { Language } from "../components/LanguageSelector";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/components/ui/use-toast";
 
 const Index = () => {
   const [response, setResponse] = useState("");
@@ -15,30 +18,46 @@ const Index = () => {
     setCitations([]);
 
     try {
-      // Simulate API call with language support
-      const mockResponse = `This is a simulated response in ${language.name} (${language.nativeName}). The actual integration will be implemented once we have the API endpoint ready.`;
-      const mockCitations = [
-        {
-          url: "https://example.com/1",
-          title: `Sample Citation 1 - ${language.name}`,
-        },
-        {
-          url: "https://example.com/2",
-          title: `Sample Citation 2 - ${language.name}`,
-        },
-      ];
+      // First, save the question to the database
+      const { data: questionData, error: questionError } = await supabase
+        .from('questions')
+        .insert({
+          question: query,
+          source_language: language.code,
+        })
+        .select()
+        .single();
 
-      // Simulate streaming
-      let currentResponse = "";
-      for (const char of mockResponse) {
-        currentResponse += char;
-        setResponse(currentResponse);
-        await new Promise((resolve) => setTimeout(resolve, 20));
-      }
+      if (questionError) throw questionError;
 
-      setCitations(mockCitations);
+      // Process the question using our Edge Function
+      const { data, error } = await supabase.functions.invoke('process-question', {
+        body: { question: query, language: language.code },
+      });
+
+      if (error) throw error;
+
+      // Save the answer to the database
+      const { error: answerError } = await supabase
+        .from('answers')
+        .insert({
+          question_id: questionData.id,
+          answer: data.answer,
+          citations: data.citations,
+        });
+
+      if (answerError) throw answerError;
+
+      // Update the UI
+      setResponse(data.answer);
+      setCitations(data.citations);
     } catch (error) {
       console.error("Search error:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred while processing your request.",
+        variant: "destructive",
+      });
       setResponse("An error occurred while processing your request.");
     } finally {
       setIsLoading(false);
