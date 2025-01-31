@@ -1,10 +1,22 @@
-project_id = "nfwkhmkhnsblhyjafmel"
-
-[api]
-enabled = true
-port = 54321
+[global]
+site_url = "http://localhost:5173"
+jwt_secret = "super-secret-jwt-token-with-at-least-32-characters-long"
+anon_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5md2tobWtobnNibGh5amFmbWVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc0NzM3NzgsImV4cCI6MjAyMzA0OTc3OH0.ZC7qqOUqGDHDtKJL3FiYnvn5eXE8BQESxjYHG1iqWQE"
+db_schema = "public"
+db_extra_search_path = "public,extensions"
+http_port = 54321
+api_port = 54321
+db_port = 54322
+studio_port = 54323
+inbucket_port = 54324
+storage_port = 54325
+auth_port = 54326
+meta_port = 54327
+realtime_port = 54328
+analytics_port = 54329
+kong_port = 54330
 schemas = ["public", "storage", "graphql_public"]
 
 [[functions]]
 [functions.process-question]
-verify_jwt = true
+verify_jwt = false

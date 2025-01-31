@@ -18,25 +18,26 @@ const Index = () => {
     setCitations([]);
 
     try {
-      // Get the current user's ID
+      // Get the current user's ID (if logged in)
       const { data: { user } } = await supabase.auth.getUser();
       
-      if (!user) {
-        throw new Error("User not authenticated");
+      let questionId: string | undefined;
+
+      // Only save question to database if user is authenticated
+      if (user) {
+        const { data: questionData, error: questionError } = await supabase
+          .from('questions')
+          .insert({
+            question: query,
+            source_language: language.code,
+            user_id: user.id
+          })
+          .select()
+          .single();
+
+        if (questionError) throw questionError;
+        questionId = questionData.id;
       }
-
-      // First, save the question to the database
-      const { data: questionData, error: questionError } = await supabase
-        .from('questions')
-        .insert({
-          question: query,
-          source_language: language.code,
-          user_id: user.id
-        })
-        .select()
-        .single();
-
-      if (questionError) throw questionError;
 
       // Process the question using our Edge Function
       const { data, error } = await supabase.functions.invoke('process-question', {
@@ -45,16 +46,18 @@ const Index = () => {
 
       if (error) throw error;
 
-      // Save the answer to the database
-      const { error: answerError } = await supabase
-        .from('answers')
-        .insert({
-          question_id: questionData.id,
-          answer: data.answer,
-          citations: data.citations,
-        });
+      // Save the answer to database only if user is authenticated and we have a question ID
+      if (user && questionId) {
+        const { error: answerError } = await supabase
+          .from('answers')
+          .insert({
+            question_id: questionId,
+            answer: data.answer,
+            citations: data.citations,
+          });
 
-      if (answerError) throw answerError;
+        if (answerError) throw answerError;
+      }
 
       // Update the UI
       setResponse(data.answer);
