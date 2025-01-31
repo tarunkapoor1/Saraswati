@@ -18,12 +18,20 @@ const Index = () => {
     setCitations([]);
 
     try {
+      // Get the current user's ID
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+
       // First, save the question to the database
       const { data: questionData, error: questionError } = await supabase
         .from('questions')
         .insert({
           question: query,
           source_language: language.code,
+          user_id: user.id
         })
         .select()
         .single();
@@ -55,7 +63,7 @@ const Index = () => {
       console.error("Search error:", error);
       toast({
         title: "Error",
-        description: "An error occurred while processing your request.",
+        description: error.message || "An error occurred while processing your request.",
         variant: "destructive",
       });
       setResponse("An error occurred while processing your request.");

@@ -6,5 +6,5 @@ port = 54321
 schemas = ["public", "storage", "graphql_public"]
 
 [[functions]]
-name = "process-question"
+[functions.process-question]
 verify_jwt = true
